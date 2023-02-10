@@ -1,4 +1,3 @@
-import sys
 from collections import defaultdict
 
 A = list(input())
@@ -19,10 +18,30 @@ if flag == False:
   print(-1)
 else:
   ans = 0
-  tmp = len(A) - 1
-  for i in range(len(A)-1, -1, -1):
-    if A[i] != B[tmp]:
+  alpha = defaultdict(int)
+  cnt = 0
+  A_idx = len(A) - 1
+  while True:
+    if cnt == len(A):
+      break
+    next = A[A_idx]
+    alpha[next] += 1
+    tmp = 0
+    B_idx = 0
+    for i in range(len(B)-1, -1, -1):
+      if next == B[i]:
+        tmp += 1
+        if tmp == alpha[next]:
+          B_idx = i
+          break
+    if B_idx < A_idx:
+      a = A.pop(A_idx)
+      A.insert(0, a)
+      alpha[next] -= 1
+
+      cnt += 1
       ans += 1
     else:
-      tmp -= 1
+      A_idx -= 1
+      cnt += 1
   print(ans)
