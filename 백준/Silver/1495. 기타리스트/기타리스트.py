@@ -1,29 +1,19 @@
-def dfs(depth, vol):
-    if visited[depth][vol]:
-        return
-    
-    visited[depth][vol] = True
-    
-    if depth == N:
-        return
-    
-
-    
-    if vol - V[depth] >= 0:
-        dfs(depth+1, vol - V[depth])
-    
-    if vol + V[depth] <= M:
-        dfs(depth+1, vol + V[depth]) 
-
 N, S, M = map(int, input().split())
 V = list(map(int, input().split()))
-visited = [[False for _ in range(M+1)] for _ in range(N+1)]
+dp = [[False for _ in range(M+1)] for _ in range(N+1)]
+dp[0][S] = True
+
+for i in range(N):
+    for j in range(M+1):
+        if dp[i][j]:
+            if j-V[i] >= 0:
+                dp[i+1][j-V[i]] = True
+            if j+V[i] <= M:
+                dp[i+1][j+V[i]] = True
+
 ans = -1
-
-dfs(0, S)
-
-for  volume, isPossible in enumerate(visited[N]):
-    if isPossible:
-        ans = volume
+for i in range(M+1):
+    if dp[N][i]:
+        ans = i
 
 print(ans)
